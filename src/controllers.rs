@@ -1,17 +1,20 @@
+use actix_web::HttpRequest;
 use actix_web::HttpResponse;
 use actix_web::Result;
 use actix_web::Json;
 
 use models;
 
-pub fn tokens_post() -> Result<Json<models::ServiceCatalog>> {
+pub fn tokens_post(req: &HttpRequest) -> Result<Json<models::Access>> {
+
+    println!("{:?}", req.uri());
 
     let endpoint = models::Endpoint{
-        public_url: "Qwdwqd".to_string(),
-        admin_url: "Qwdwqd".to_string(),
-        internal_url: "Qwdwqd".to_string(),
-        id: "Qwdwqd".to_string(),
-        region: "Qwdwqd".to_string(),
+        public_url: "TODO".to_string(),
+        admin_url: "TODO".to_string(),
+        internal_url: "TODO".to_string(),
+        id: "TODO".to_string(),
+        region: "TODO".to_string(),
     };
 
     let service = models::Service {
@@ -21,11 +24,34 @@ pub fn tokens_post() -> Result<Json<models::ServiceCatalog>> {
         endpoints_links: Vec::new()
     };
 
-    let service_catalog = models::ServiceCatalog {
-        endpoints: vec![service]
+    let access = models::Access {
+        service_catalog: models::ServiceCatalog {
+            endpoints: vec![service]
+        },
+        token: models::Token {
+            id: "TODO".to_string(),
+            issued_at: "TODO".to_string(),
+            expires: "TODO".to_string(),
+            tenant: models::TokenTenant {
+                id: "TODO".to_string(),
+                description: "TODO".to_string(),
+                enabled: true,
+                name: "TODO".to_string()
+            }
+        },
+        user: models::User {
+            name: "TODO".to_string(),
+            username: "TODO".to_string(),
+            roles: vec![],
+            roles_links: vec![]
+        },
+        metadata: models::Metadata {
+            is_admin: true,
+            roles: vec![]
+        }
     };
 
-    Ok(Json(service_catalog))
+    Ok(Json(access))
 }
 
 pub fn account_get() -> HttpResponse {

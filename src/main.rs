@@ -15,7 +15,7 @@ fn main() {
         App::new()
 
             .resource("/v2/tokens", |r| {
-                r.method(Method::POST).f(|_| controllers::tokens_post())
+                r.method(Method::POST).f(|req| controllers::tokens_post(req))
             })
 
             .resource("/v1/{account}", |r| {

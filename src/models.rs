@@ -1,4 +1,40 @@
+#[derive(Serialize)]
+pub struct Access {
+    pub token: Token,
+    pub service_catalog: ServiceCatalog,
+    pub user: User,
+    pub metadata: Metadata
+}
 
+#[derive(Serialize)]
+pub struct Token {
+    pub issued_at: String,
+    pub expires: String,
+    pub id: String,
+    pub tenant: TokenTenant,
+}
+
+#[derive(Serialize)]
+pub struct User {
+    pub username: String,
+    pub name: String,
+    pub roles_links: Vec<String>,
+    pub roles: Vec<String>
+}
+
+#[derive(Serialize)]
+pub struct TokenTenant {
+    pub id: String,
+    pub description: String,
+    pub name: String,
+    pub enabled: bool
+}
+
+#[derive(Serialize)]
+pub struct Metadata {
+    pub is_admin: bool,
+    pub roles: Vec<String>
+}
 
 #[derive(Serialize)]
 pub struct Endpoint {
