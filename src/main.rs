@@ -1,14 +1,23 @@
 extern crate actix_web;
+extern crate serde;
+#[macro_use]
+extern crate serde_derive;
 
 use actix_web::server;
 use actix_web::App;
 use actix_web::http::Method;
 
 pub mod controllers;
+pub mod models;
 
 fn main() {
     server::new(|| {
         App::new()
+
+            .resource("/v2/tokens", |r| {
+                r.method(Method::POST).f(|_| controllers::tokens_post())
+            })
+
             .resource("/v1/{account}", |r| {
                 r.method(Method::GET).f(|_| controllers::account_get());
                 r.method(Method::HEAD).f(|_| controllers::account_head());
@@ -31,7 +40,7 @@ fn main() {
                 r.method(Method::DELETE).f(|_| controllers::object_delete())
             })
     })
-    .bind("127.0.0.1:8000")
-    .expect("Can not bind to port 8000")
+    .bind("127.0.0.1:8888")
+    .expect("Can not bind to port 8888")
     .run();
 }

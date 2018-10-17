@@ -1,4 +1,32 @@
 use actix_web::HttpResponse;
+use actix_web::Result;
+use actix_web::Json;
+
+use models;
+
+pub fn tokens_post() -> Result<Json<models::ServiceCatalog>> {
+
+    let endpoint = models::Endpoint{
+        public_url: "Qwdwqd".to_string(),
+        admin_url: "Qwdwqd".to_string(),
+        internal_url: "Qwdwqd".to_string(),
+        id: "Qwdwqd".to_string(),
+        region: "Qwdwqd".to_string(),
+    };
+
+    let service = models::Service {
+        endpoints: vec![endpoint],
+        service_type: "object-store".to_string(),
+        name: "swift".to_string(),
+        endpoints_links: Vec::new()
+    };
+
+    let service_catalog = models::ServiceCatalog {
+        endpoints: vec![service]
+    };
+
+    Ok(Json(service_catalog))
+}
 
 pub fn account_get() -> HttpResponse {
     HttpResponse::Ok().finish()
