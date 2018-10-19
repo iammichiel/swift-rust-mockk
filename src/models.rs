@@ -1,7 +1,13 @@
 #[derive(Serialize)]
+pub struct TokenRequestResponse {
+    pub access: Access
+}
+
+#[derive(Serialize)]
 pub struct Access {
     pub token: Token,
-    pub service_catalog: ServiceCatalog,
+    #[serde(rename = "serviceCatalog")]
+    pub service_catalog: Vec<Service>,
     pub user: User,
     pub metadata: Metadata
 }
@@ -46,18 +52,18 @@ pub struct Endpoint {
     pub public_url: String,
     pub region: String,
     pub id: String
-
 }
 
 #[derive(Serialize)]
 pub struct Service {
     pub endpoints: Vec<Endpoint>,
     pub endpoints_links: Vec<String>,
+    #[serde(rename = "type")]
     pub service_type: String,
     pub name: String
 }
 
 #[derive(Serialize)]
 pub struct ServiceCatalog {
-    pub endpoints: Vec<Service>
+
 }

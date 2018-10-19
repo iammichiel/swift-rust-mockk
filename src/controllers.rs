@@ -5,49 +5,49 @@ use actix_web::Json;
 
 use models;
 
-pub fn tokens_post(req: &HttpRequest) -> Result<Json<models::Access>> {
+pub fn tokens_post(req: &HttpRequest) -> Result<Json<models::TokenRequestResponse>> {
 
-    println!("{:?}", req.uri());
-
-    let endpoint = models::Endpoint{
-        public_url: "TODO".to_string(),
-        admin_url: "TODO".to_string(),
-        internal_url: "TODO".to_string(),
-        id: "TODO".to_string(),
-        region: "TODO".to_string(),
-    };
+    let full_hostname = format!("{}://{}", req.connection_info().scheme(), req.connection_info().host());
+    let endpoint_url = format!("{}/", full_hostname);
+    println!("{}", full_hostname);
 
     let service = models::Service {
-        endpoints: vec![endpoint],
+        endpoints: vec![models::Endpoint{
+            public_url: endpoint_url.clone(),
+            admin_url: endpoint_url.clone(),
+            internal_url: endpoint_url.clone(),
+            id: "SBG1".to_string(),
+            region: "SBG1".to_string(),
+        }],
         service_type: "object-store".to_string(),
         name: "swift".to_string(),
         endpoints_links: Vec::new()
     };
 
-    let access = models::Access {
-        service_catalog: models::ServiceCatalog {
-            endpoints: vec![service]
-        },
-        token: models::Token {
-            id: "TODO".to_string(),
-            issued_at: "TODO".to_string(),
-            expires: "TODO".to_string(),
-            tenant: models::TokenTenant {
+    let access = models::TokenRequestResponse {
+        access: models::Access {
+            service_catalog: vec![service],
+            token: models::Token {
                 id: "TODO".to_string(),
-                description: "TODO".to_string(),
-                enabled: true,
-                name: "TODO".to_string()
+                issued_at: "TODO".to_string(),
+                expires: "TODO".to_string(),
+                tenant: models::TokenTenant {
+                    id: "TODO".to_string(),
+                    description: "TODO".to_string(),
+                    enabled: true,
+                    name: "TODO".to_string()
+                }
+            },
+            user: models::User {
+                name: "TODO".to_string(),
+                username: "TODO".to_string(),
+                roles: vec![],
+                roles_links: vec![]
+            },
+            metadata: models::Metadata {
+                is_admin: true,
+                roles: vec![]
             }
-        },
-        user: models::User {
-            name: "TODO".to_string(),
-            username: "TODO".to_string(),
-            roles: vec![],
-            roles_links: vec![]
-        },
-        metadata: models::Metadata {
-            is_admin: true,
-            roles: vec![]
         }
     };
 
